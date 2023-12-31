@@ -1,0 +1,131 @@
+<!-- views/addmember.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Member</title>
+    <!-- Add Bootstrap CSS link -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      #sidebar {
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 10px;
+        border-right: 1px solid #525252;
+        min-height: 100vh; /* Ensure the sidebar extends to the bottom */
+      }
+
+      #sidebar h2 {
+        color: #ffc107;
+        margin-bottom: 20px;
+      }
+
+      #sidebar .nav-link {
+        color: #ffffff;
+      }
+
+      form {
+        max-width: 500px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #343a40;
+      }
+
+      label {
+        margin-top: 10px;
+        display: block;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        box-sizing: border-box;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar using Bootstrap classes -->
+        <div id="sidebar" class="col-md-2">
+          <h2>Library Management System</h2>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="/books">Books</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/members">Members</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/borrowings">Borrowings</a>
+            </li>
+            <!-- Add the Logout link -->
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-10">
+          <h1>Add New Member</h1>
+          <form method="post" action="/members/add">
+            <label>Name:</label>
+            <input type="text" name="name" required />
+
+            <label>Code:</label>
+            <input type="text" name="code" required />
+
+            <label>Email:</label>
+            <input type="email" name="email" required />
+
+            <label>Phone:</label>
+            <input type="text" name="phone" required />
+
+            <label>Address:</label>
+            <textarea name="address" rows="3" required></textarea>
+
+            <br />
+            <br />
+            <button type="submit">Add Member</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>

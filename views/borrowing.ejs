@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Borrowings Data</title>
+    <!-- Add Bootstrap CSS link -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      #sidebar {
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 10px;
+        border-right: 1px solid #525252;
+        height: 100vh;
+      }
+
+      #sidebar h2 {
+        color: #ffc107;
+        margin-bottom: 20px;
+      }
+
+      #sidebar .nav-link {
+        color: #ffffff;
+      }
+
+      #content {
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #343a40;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 10px 0px #000000;
+      }
+
+      th,
+      td {
+        padding: 15px;
+        border: 1px solid #dee2e6;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f8f9fa;
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .add-borrowing-button {
+        margin-bottom: 20px;
+      }
+
+      .search-form {
+        margin-bottom: 20px;
+      }
+
+      .search-form form {
+        display: flex;
+      }
+
+      .search-form label {
+        margin-right: 10px;
+      }
+      .action-buttons {
+        display: flex;
+        align-items: center;
+      }
+
+      .action-buttons .btn {
+        margin-right: 5px; /* Adjust the spacing between buttons */
+      }
+    </style>
+
+    <!-- Add the script block for formatDate function -->
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar using Bootstrap classes -->
+        <div id="sidebar" class="col-md-2">
+          <h2>Library Management System</h2>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="/books">Books</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/members">Members</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/borrowings">Borrowings</a>
+            </li>
+            <!-- Add the Logout link -->
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Content area using Bootstrap classes -->
+        <div id="content" class="col-md-10">
+          <h1>Borrowings Data</h1>
+          <!-- Add Borrowing button -->
+          <button
+            class="btn btn-primary mb-3 add-borrowing-button"
+            id="addBorrowingButton"
+          >
+            Add Borrowing
+          </button>
+
+          <!-- Search Form -->
+          <div class="search-form">
+            <form method="get" action="/borrowings/search" class="d-flex">
+              <input
+                type="text"
+                name="search"
+                id="search"
+                placeholder="Enter Book Title or Member Name"
+                class="form-control mr-2"
+              />
+              <button type="submit" class="btn btn-primary">Search</button>
+              <!-- Simple link to /borrowings page -->
+              <a href="/borrowings" class="btn btn-secondary ml-2">Reset</a>
+            </form>
+          </div>
+
+          <table class="table table-bordered">
+            <thead class="thead-light">
+              <tr>
+                <th>Book Title</th>
+                <th>Member Name</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th>
+                <th>Returned Date</th>
+                <th>Fine</th>
+                <th colspan="2">Status</th>
+                <!-- Increase colspan value -->
+                <th colspan="2">Action</th>
+                <!-- Increase colspan value -->
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let index = 0; index < borrowings.length; index++) { %>
+              <tr>
+                <td><%= borrowings[index].bookName %></td>
+                <td><%= borrowings[index].memberName %></td>
+                <td><%= borrowings[index].borrow_date %></td>
+                <td><%= borrowings[index].return_date %></td>
+                <td><%= borrowings[index].returned_date %></td>
+                <td><%= borrowings[index].fine %></td>
+                <td class="status-cell" colspan="2">
+                  <!-- Increase colspan value -->
+                  <span
+                    class="<%= borrowings[index].status === 'not_returned' ? 'badge badge-danger' : 'badge badge-success' %>"
+                  >
+                    <%= borrowings[index].status %>
+                  </span>
+                </td>
+                <!-- Inside the loop where action buttons are defined -->
+                <td class="action-buttons" colspan="2">
+                  <div class="btn-group">
+                    <% if (borrowings[index].status !== 'returned') { %>
+                    <!-- Link to Edit route with borrowing ID -->
+                    <a
+                      href="/borrowings/edit/<%= borrowings[index].id %>"
+                      class="btn btn-primary btn-sm"
+                    >
+                      Edit
+                    </a>
+                    <% } %>
+
+                    <!-- Link to Delete route with borrowing ID -->
+                    <form
+                      method="post"
+                      action="/borrowings/delete/<%= borrowings[index].id %>"
+                      class="delete-form"
+                    >
+                      <button
+                        type="submit"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Are you sure you want to delete this borrowing?')"
+                      >
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Include jQuery and Bootstrap JS from CDN -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+      document
+        .getElementById("addBorrowingButton")
+        .addEventListener("click", function () {
+          window.location.href = "/borrowings/add";
+        });
+    </script>
+  </body>
+</html>
